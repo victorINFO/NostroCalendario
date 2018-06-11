@@ -14,22 +14,25 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class CalendarView extends Activity {
 
-    public GregorianCalendar month, itemmonth;
+    public GregorianCalendar month, itemmonth;// calendar instances.
 
-    public CalendarAdapter adapter;
-    public Handler handler;
-    public ArrayList<String> items;
+    public CalendarAdapter adapter;// adapter instance
+    public Handler handler;// for grabbing some event values for showing the dot
+    // marker.
+    public ArrayList<String> items; // container to store calendar items which
+    // needs showing the event marker
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.calendar);
-        Locale.setDefault( Locale.ITALY );
+        setContentView(R.layout.calendar2);
+        Locale.setDefault( Locale.US );
         month = (GregorianCalendar) GregorianCalendar.getInstance();
         itemmonth = (GregorianCalendar) month.clone();
 
@@ -45,7 +48,7 @@ public class CalendarView extends Activity {
         TextView title = (TextView) findViewById(R.id.title);
         title.setText(android.text.format.DateFormat.format("MMMM yyyy", month));
 
-        RelativeLayout previous = (RelativeLayout) findViewById(R.id.previous);
+        ImageButton previous = (ImageButton) findViewById(R.id.previous);
 
         previous.setOnClickListener(new OnClickListener() {
 
@@ -56,7 +59,7 @@ public class CalendarView extends Activity {
             }
         });
 
-        RelativeLayout next = (RelativeLayout) findViewById(R.id.next);
+        ImageButton next = (ImageButton) findViewById(R.id.next);
         next.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -76,8 +79,9 @@ public class CalendarView extends Activity {
                         .get(position);
                 String[] separatedTime = selectedGridDate.split("-");
                 String gridvalueString = separatedTime[2].replaceFirst("^0*",
-                        "");
+                        "");// taking last part of date. ie; 2 from 2012-12-02.
                 int gridvalue = Integer.parseInt(gridvalueString);
+                // navigate to next or previous month on clicking offdays.
                 if ((gridvalue > 10) && (position < 8)) {
                     setPreviousMonth();
                     refreshCalendar();
@@ -127,7 +131,7 @@ public class CalendarView extends Activity {
 
         adapter.refreshDays();
         adapter.notifyDataSetChanged();
-        handler.post(calendarUpdater);
+        handler.post(calendarUpdater); // generate some calendar items
 
         title.setText(android.text.format.DateFormat.format("MMMM yyyy", month));
     }
@@ -138,8 +142,8 @@ public class CalendarView extends Activity {
         public void run() {
             items.clear();
 
-
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd",Locale.ITALY);
+            // Print dates of the current week
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd",Locale.US);
             String itemvalue;
             for (int i = 0; i < 7; i++) {
                 itemvalue = df.format(itemmonth.getTime());
