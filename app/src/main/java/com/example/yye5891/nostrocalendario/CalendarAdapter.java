@@ -20,10 +20,8 @@ public class CalendarAdapter extends BaseAdapter {
     private Context mContext;
 
     private java.util.Calendar month;
-    public GregorianCalendar pmonth; // calendar instance for previous month
-    /**
-     * calendar instance for previous month for getting complete view
-     */
+    public GregorianCalendar pmonth;
+
     public GregorianCalendar pmonthmaxset;
     private GregorianCalendar selectedDate;
     int firstDay;
@@ -35,6 +33,7 @@ public class CalendarAdapter extends BaseAdapter {
     int mnthlength;
     String itemvalue, curentDateString;
     DateFormat df;
+
 
     private ArrayList<String> items;
     public static List<String> dayString;
@@ -74,46 +73,40 @@ public class CalendarAdapter extends BaseAdapter {
         return 0;
     }
 
-    // create a new view for each item referenced by the Adapter
     public View getView(int position, View convertView, ViewGroup parent) {
         View v = convertView;
         TextView dayView;
-        if (convertView == null) { // if it's not recycled, initialize some
-            // attributes
+        if (convertView == null) {
             LayoutInflater vi = (LayoutInflater) mContext
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             v = vi.inflate(R.layout.calendar_item, null);
 
         }
         dayView = (TextView) v.findViewById(R.id.date);
-        // separates daystring into parts.
         String[] separatedTime = dayString.get(position).split("-");
-        // taking last part of date. ie; 2 from 2012-12-02
         String gridvalue = separatedTime[2].replaceFirst("^0*", "");
-        // checking whether the day is in current month or not.
         if ((Integer.parseInt(gridvalue) > 1) && (position < firstDay)) {
-            // setting offdays to white color.
-            dayView.setTextColor(Color.WHITE);
+            dayView.setTextColor(Color.GRAY);
             dayView.setClickable(false);
             dayView.setFocusable(false);
         } else if ((Integer.parseInt(gridvalue) < 7) && (position > 28)) {
-            dayView.setTextColor(Color.WHITE);
+            dayView.setTextColor(Color.GRAY);
             dayView.setClickable(false);
             dayView.setFocusable(false);
         } else {
-            // setting curent month's days in blue color.
-            dayView.setTextColor(Color.BLUE);
+            dayView.setTextColor(Color.BLACK);
         }
 
         if (dayString.get(position).equals(curentDateString)) {
             setSelected(v);
+            dayView.setBackgroundResource(R.drawable.circle_text);
             previousView = v;
         } else {
-            v.setBackgroundResource(R.drawable.list_item_background);
+            v.setBackgroundResource(R.drawable.item_background);
+            dayView.setBackgroundResource(R.drawable.item_background);
+
         }
         dayView.setText(gridvalue);
-
-        // create date string for comparison
         String date = dayString.get(position);
 
         if (date.length() == 1) {
@@ -136,15 +129,13 @@ public class CalendarAdapter extends BaseAdapter {
 
     public View setSelected(View view) {
         if (previousView != null) {
-            previousView.setBackgroundResource(R.drawable.list_item_background);
+            previousView.setBackgroundResource(R.drawable.item_background);
         }
         previousView = view;
-        view.setBackgroundResource(R.drawable.calendar_cel_selectl);
         return view;
     }
 
     public void refreshDays() {
-        // clear items
         items.clear();
         dayString.clear();
         Locale.setDefault( Locale.US );
@@ -157,19 +148,12 @@ public class CalendarAdapter extends BaseAdapter {
         mnthlength = maxWeeknumber * 7;
         maxP = getMaxP(); // previous month maximum day 31,30....
         calMaxP = maxP - (firstDay - 1);// calendar offday starting 24,25 ...
-        /**
-         * Calendar instance for getting a complete gridview including the three
-         * month's (previous,current,next) dates.
-         */
+
         pmonthmaxset = (GregorianCalendar) pmonth.clone();
-        /**
-         * setting the start date as previous month's required date.
-         */
+
         pmonthmaxset.set(GregorianCalendar.DAY_OF_MONTH, calMaxP + 1);
 
-        /**
-         * filling calendar gridview.
-         */
+
         for (int n = 0; n < mnthlength; n++) {
 
             itemvalue = df.format(pmonthmaxset.getTime());
