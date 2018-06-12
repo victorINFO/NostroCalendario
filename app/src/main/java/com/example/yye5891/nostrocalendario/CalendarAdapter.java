@@ -34,6 +34,7 @@ public class CalendarAdapter extends BaseAdapter {
     String itemvalue, curentDateString;
     DateFormat df;
 
+    //addioooooo
 
     private ArrayList<String> items;
     public static List<String> dayString;
