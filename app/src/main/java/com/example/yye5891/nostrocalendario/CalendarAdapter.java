@@ -3,12 +3,14 @@ package com.example.yye5891.nostrocalendario;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,23 +36,30 @@ public class CalendarAdapter extends BaseAdapter {
     String itemvalue, curentDateString;
     DateFormat df;
 
-    //addioooooo
 
     private ArrayList<String> items;
     public static List<String> dayString;
     private View previousView;
 
-    public CalendarAdapter(Context c, GregorianCalendar monthCalendar) {
+    TextView dayView, mattina, pomeriggio;
+    View v;
+
+    ArrayList<Presenze> arrayP;
+
+    public CalendarAdapter(Context c, GregorianCalendar monthCalendar, ArrayList<Presenze> arrayP) {
+        this.arrayP = arrayP;
         CalendarAdapter.dayString = new ArrayList<String>();
-        Locale.setDefault( Locale.US );
+        Locale.setDefault( Locale.ITALY );
         month = monthCalendar;
+        Log.d("formaggio",  ""+month);
         selectedDate = (GregorianCalendar) monthCalendar.clone();
         mContext = c;
         month.set(GregorianCalendar.DAY_OF_MONTH, 1);
         this.items = new ArrayList<String>();
-        df = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        df = new SimpleDateFormat("yyyy-MM-dd", Locale.ITALY);
         curentDateString = df.format(selectedDate.getTime());
         refreshDays();
+        Log.d("margherita",  ""+dayString);
     }
 
     public void setItems(ArrayList<String> items) {
@@ -60,7 +69,11 @@ public class CalendarAdapter extends BaseAdapter {
             }
         }
         this.items = items;
+
     }
+
+
+
 
     public int getCount() {
         return dayString.size();
@@ -75,6 +88,7 @@ public class CalendarAdapter extends BaseAdapter {
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
+
         View v = convertView;
         TextView dayView;
         if (convertView == null) {
@@ -83,10 +97,22 @@ public class CalendarAdapter extends BaseAdapter {
             v = vi.inflate(R.layout.calendar_item, null);
 
         }
+
+
         dayView = (TextView) v.findViewById(R.id.date);
+        mattina = (TextView) v.findViewById(R.id.mattina);
+        pomeriggio = (TextView) v.findViewById(R.id.pomeriggio);
+
+
+        //PROVA
+        Colore(position);
+
+
+
         String[] separatedTime = dayString.get(position).split("-");
         String gridvalue = separatedTime[2].replaceFirst("^0*", "");
         if ((Integer.parseInt(gridvalue) > 1) && (position < firstDay)) {
+            Log.d("ciao5", "fiore" + firstDay);
             dayView.setTextColor(Color.GRAY);
             dayView.setClickable(false);
             dayView.setFocusable(false);
@@ -128,6 +154,46 @@ public class CalendarAdapter extends BaseAdapter {
         return v;
     }
 
+
+
+
+    public void Colore(int position) {
+
+        //PROVA
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String s = dateFormat.format(arrayP.get(0).getGiorno());
+
+        Log.d("ciao4", "fiore" + dayString.get(position)+" "+ s);
+
+        if(s.equals(dayString.get(position))){
+
+            switch (arrayP.get(0).getMattina()) {
+                case "assente":
+                    mattina.setBackgroundColor(mContext.getResources().getColor(R.color.rosso));
+                    break;
+                case "presente":
+                    mattina.setBackgroundColor(mContext.getResources().getColor(R.color.verde));
+                    break;
+                case "trasferta":
+                    mattina.setBackgroundColor(mContext.getResources().getColor(R.color.azzurro));
+                    break;
+            }
+
+
+
+
+        }else {
+
+            refreshDays();
+            refreshTextView();
+            notifyDataSetChanged();
+        }
+
+    }
+
+
+
+
     public View setSelected(View view) {
         if (previousView != null) {
             previousView.setBackgroundResource(R.drawable.item_background);
@@ -139,7 +205,7 @@ public class CalendarAdapter extends BaseAdapter {
     public void refreshDays() {
         items.clear();
         dayString.clear();
-        Locale.setDefault( Locale.US );
+        Locale.setDefault( Locale.ITALY );
         pmonth = (GregorianCalendar) month.clone();
         // month start day. ie; sun, mon, etc
         firstDay = month.get(GregorianCalendar.DAY_OF_WEEK);
@@ -161,7 +227,9 @@ public class CalendarAdapter extends BaseAdapter {
             pmonthmaxset.add(GregorianCalendar.DATE, 1);
             dayString.add(itemvalue);
 
+
         }
+
     }
 
     private int getMaxP() {
@@ -177,6 +245,11 @@ public class CalendarAdapter extends BaseAdapter {
         maxP = pmonth.getActualMaximum(GregorianCalendar.DAY_OF_MONTH);
 
         return maxP;
+    }
+
+    public void refreshTextView(){
+        mattina.setBackgroundColor(Color.WHITE);
+        pomeriggio.setBackgroundColor(Color.WHITE);
     }
 
 }

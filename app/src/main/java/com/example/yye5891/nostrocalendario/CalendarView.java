@@ -1,8 +1,10 @@
 package com.example.yye5891.nostrocalendario;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
@@ -26,12 +28,14 @@ public class CalendarView extends Activity {
     public Handler handler;
     public ArrayList<String> items;
 
+    public ArrayList<Presenze> arrayP = new ArrayList<>();
+    Date giorno1, giorno2, giorno3;
 
     @SuppressLint("ClickableViewAccessibility")
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calendar2);
-        Locale.setDefault( Locale.US );
+        Locale.setDefault( Locale.ITALY );
         month = (GregorianCalendar) GregorianCalendar.getInstance();
         itemmonth = (GregorianCalendar) month.clone();
 
@@ -42,10 +46,37 @@ public class CalendarView extends Activity {
         pulse_right.startAnimation(AnimationUtils.loadAnimation(this, R.anim.pulse_right_out));
 
         items = new ArrayList<String>();
-        adapter = new CalendarAdapter(this, month);
+        adapter = new CalendarAdapter(this, month, arrayP);
 
         final GridView gridview = (GridView) findViewById(R.id.gridview);
         gridview.setAdapter(adapter);
+
+
+        String dtStart = "2018-06-15";
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            giorno1 = format.parse(dtStart);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String dtStart2 = "2018-06-16";
+        try {
+            giorno2 = format.parse(dtStart2);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String dtStart3 = "2018-06-18";
+        try {
+            giorno3 = format.parse(dtStart3);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+        arrayP.add(new Presenze(giorno1, "presente", "trasferta"));
+        arrayP.add(new Presenze(giorno2, "assente", "presente"));
+        arrayP.add( new Presenze(giorno3, "trasferta", "assente"));
+
 
         handler = new Handler();
         handler.post(calendarUpdater);
@@ -114,6 +145,7 @@ public class CalendarView extends Activity {
                     month.get(GregorianCalendar.MONTH) + 1);
         }
 
+        adapter.refreshTextView();
 
     }
 
@@ -135,8 +167,8 @@ public class CalendarView extends Activity {
         adapter.refreshDays();
         adapter.notifyDataSetChanged();
         handler.post(calendarUpdater);
-
         title.setText(android.text.format.DateFormat.format("MMMM yyyy", month));
+
     }
 
     public Runnable calendarUpdater = new Runnable() {
@@ -146,21 +178,9 @@ public class CalendarView extends Activity {
             items.clear();
 
             // Print dates of the current week
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd",Locale.US);
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd",Locale.ITALY);
             String itemvalue;
-            for (int i = 0; i < 7; i++) {
-                itemvalue = df.format(itemmonth.getTime());
-                itemmonth.add(GregorianCalendar.DATE, 1);
-                items.add("2012-09-12");
-                items.add("2012-10-07");
-                items.add("2012-10-15");
-                items.add("2012-10-20");
-                items.add("2012-11-30");
-                items.add("2012-11-28");
-            }
 
-            adapter.setItems(items);
-            adapter.notifyDataSetChanged();
         }
     };
 }
