@@ -29,7 +29,7 @@ public class CalendarView extends Activity {
     public ArrayList<String> items;
 
     public ArrayList<Presenze> arrayP = new ArrayList<>();
-    Date giorno1, giorno2, giorno3;
+    Date giorno1, giorno2, giorno3,giorno4;
 
     @SuppressLint("ClickableViewAccessibility")
     public void onCreate(Bundle savedInstanceState) {
@@ -52,30 +52,39 @@ public class CalendarView extends Activity {
         gridview.setAdapter(adapter);
 
 
-        String dtStart = "2018-06-15";
+        String dtStart = "2018-03-18";
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         try {
             giorno1 = format.parse(dtStart);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        String dtStart2 = "2018-06-16";
+        String dtStart2 = "2018-04-16";
         try {
             giorno2 = format.parse(dtStart2);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        String dtStart3 = "2018-06-18";
+        String dtStart3 = "2018-06-14";
         try {
             giorno3 = format.parse(dtStart3);
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
+        String dtStart4 = "2018-05-11";
+        try {
+            giorno4 = format.parse(dtStart4);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
 
         arrayP.add(new Presenze(giorno1, "presente", "trasferta"));
         arrayP.add(new Presenze(giorno2, "assente", "presente"));
         arrayP.add( new Presenze(giorno3, "trasferta", "assente"));
+        arrayP.add( new Presenze(giorno4, "assente", "presente"));
 
 
         handler = new Handler();

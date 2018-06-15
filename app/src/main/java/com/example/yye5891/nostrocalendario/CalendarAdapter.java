@@ -49,9 +49,9 @@ public class CalendarAdapter extends BaseAdapter {
     public CalendarAdapter(Context c, GregorianCalendar monthCalendar, ArrayList<Presenze> arrayP) {
         this.arrayP = arrayP;
         CalendarAdapter.dayString = new ArrayList<String>();
-        Locale.setDefault( Locale.ITALY );
+        Locale.setDefault(Locale.ITALY);
         month = monthCalendar;
-        Log.d("formaggio",  ""+month);
+        Log.d("formaggio", "" + month);
         selectedDate = (GregorianCalendar) monthCalendar.clone();
         mContext = c;
         month.set(GregorianCalendar.DAY_OF_MONTH, 1);
@@ -59,7 +59,7 @@ public class CalendarAdapter extends BaseAdapter {
         df = new SimpleDateFormat("yyyy-MM-dd", Locale.ITALY);
         curentDateString = df.format(selectedDate.getTime());
         refreshDays();
-        Log.d("margherita",  ""+dayString);
+        Log.d("margherita", "" + dayString);
     }
 
     public void setItems(ArrayList<String> items) {
@@ -71,8 +71,6 @@ public class CalendarAdapter extends BaseAdapter {
         this.items = items;
 
     }
-
-
 
 
     public int getCount() {
@@ -106,7 +104,6 @@ public class CalendarAdapter extends BaseAdapter {
 
         //PROVA
         Colore(position);
-
 
 
         String[] separatedTime = dayString.get(position).split("-");
@@ -155,13 +152,50 @@ public class CalendarAdapter extends BaseAdapter {
     }
 
 
+    public void Colore(int position) {
 
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            for (int i = 0; i < arrayP.size(); i++) {
+                String s = dateFormat.format(arrayP.get(i).getGiorno());
+                Log.d("giovanni", "Colore: " + s + "     " );
+
+                if (s.equals(dayString.get(position))) {
+                    Log.d("giovanni2", "Colore: " + s + "     " + dayString.get(position));
+                    
+                    switch (arrayP.get(i).getMattina()) {
+                        case "assente":
+                            mattina.setBackgroundColor(mContext.getResources().getColor(R.color.rosso));
+                            break;
+                        case "presente":
+                            mattina.setBackgroundColor(mContext.getResources().getColor(R.color.verde));
+                            break;
+                        case "trasferta":
+                            mattina.setBackgroundColor(mContext.getResources().getColor(R.color.azzurro));
+                            break;
+                    }
+
+
+                } else {
+                    refreshDays();
+                    refreshTextView();
+                    notifyDataSetChanged();
+
+                }
+            }
+
+    }
+
+
+
+
+/*
 
     public void Colore(int position) {
 
         //PROVA
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String s = dateFormat.format(arrayP.get(0).getGiorno());
+        String s1 = dateFormat.format(arrayP.get(1).getGiorno());
 
         Log.d("ciao4", "fiore" + dayString.get(position)+" "+ s);
 
@@ -179,17 +213,29 @@ public class CalendarAdapter extends BaseAdapter {
                     break;
             }
 
-
-
-
         }else {
+            if (s1.equals(dayString.get(position))) {
 
-            refreshDays();
-            refreshTextView();
-            notifyDataSetChanged();
+                switch (arrayP.get(1).getMattina()) {
+                    case "assente":
+                        mattina.setBackgroundColor(mContext.getResources().getColor(R.color.rosso));
+                        break;
+                    case "presente":
+                        mattina.setBackgroundColor(mContext.getResources().getColor(R.color.verde));
+                        break;
+                    case "trasferta":
+                        mattina.setBackgroundColor(mContext.getResources().getColor(R.color.azzurro));
+                        break;
+                }}else{
+
+                    refreshDays();
+                    refreshTextView();
+                    notifyDataSetChanged();
+                }
+            }
         }
 
-    }
+*/
 
 
 
