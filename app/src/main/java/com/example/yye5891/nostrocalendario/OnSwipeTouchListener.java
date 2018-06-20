@@ -6,6 +6,8 @@ import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 public class OnSwipeTouchListener implements OnTouchListener{
 
@@ -58,12 +60,14 @@ public class OnSwipeTouchListener implements OnTouchListener{
                 exception.printStackTrace();
             }
             return result;
+
         }
     }
 
 
 
     public void onSwipeRight() {
+
     }
 
 

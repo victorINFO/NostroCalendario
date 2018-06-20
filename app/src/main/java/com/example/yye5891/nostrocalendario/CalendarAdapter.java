@@ -1,21 +1,25 @@
 package com.example.yye5891.nostrocalendario;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class CalendarAdapter extends BaseAdapter {
@@ -35,6 +39,7 @@ public class CalendarAdapter extends BaseAdapter {
     int mnthlength;
     String itemvalue, curentDateString;
     DateFormat df;
+    Date date;
 
 
     private ArrayList<String> items;
@@ -42,25 +47,29 @@ public class CalendarAdapter extends BaseAdapter {
     private View previousView;
 
     TextView dayView, mattina, pomeriggio;
+    LinearLayout lay;
     View v;
+
 
     ArrayList<Presenze> arrayP;
 
     public CalendarAdapter(Context c, GregorianCalendar monthCalendar, ArrayList<Presenze> arrayP) {
         this.arrayP = arrayP;
         CalendarAdapter.dayString = new ArrayList<String>();
-        Locale.setDefault(Locale.ITALY);
+        Locale.setDefault(Locale.US);
         month = monthCalendar;
         Log.d("formaggio", "" + month);
         selectedDate = (GregorianCalendar) monthCalendar.clone();
         mContext = c;
         month.set(GregorianCalendar.DAY_OF_MONTH, 1);
         this.items = new ArrayList<String>();
-        df = new SimpleDateFormat("yyyy-MM-dd", Locale.ITALY);
+        df = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         curentDateString = df.format(selectedDate.getTime());
         refreshDays();
         Log.d("margherita", "" + dayString);
     }
+
+
 
     public void setItems(ArrayList<String> items) {
         for (int i = 0; i != items.size(); i++) {
@@ -71,6 +80,7 @@ public class CalendarAdapter extends BaseAdapter {
         this.items = items;
 
     }
+
 
 
     public int getCount() {
@@ -100,16 +110,15 @@ public class CalendarAdapter extends BaseAdapter {
         dayView = (TextView) v.findViewById(R.id.date);
         mattina = (TextView) v.findViewById(R.id.mattina);
         pomeriggio = (TextView) v.findViewById(R.id.pomeriggio);
+        lay = v.findViewById(R.id.lay_item);
 
-
-        //PROVA
+       
         Colore(position);
 
 
         String[] separatedTime = dayString.get(position).split("-");
         String gridvalue = separatedTime[2].replaceFirst("^0*", "");
         if ((Integer.parseInt(gridvalue) > 1) && (position < firstDay)) {
-            Log.d("ciao5", "fiore" + firstDay);
             dayView.setTextColor(Color.GRAY);
             dayView.setClickable(false);
             dayView.setFocusable(false);
@@ -123,11 +132,11 @@ public class CalendarAdapter extends BaseAdapter {
 
         if (dayString.get(position).equals(curentDateString)) {
             setSelected(v);
-            dayView.setBackgroundResource(R.drawable.circle_text);
+            lay.setBackgroundResource(R.color.item);
             previousView = v;
         } else {
             v.setBackgroundResource(R.drawable.item_background);
-            dayView.setBackgroundResource(R.drawable.item_background);
+            lay.setBackgroundResource(R.drawable.item_background);
 
         }
         dayView.setText(gridvalue);
@@ -153,92 +162,61 @@ public class CalendarAdapter extends BaseAdapter {
 
 
     public void Colore(int position) {
+           for (int i = 0; i < arrayP.size(); i++) {
+                if (!(dayString.get(position).equals(arrayP.get(i).getGiorno()))) {
+                        refreshDays();
+                        refreshTextView();
+                        notifyDataSetChanged();
 
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            for (int i = 0; i < arrayP.size(); i++) {
-                String s = dateFormat.format(arrayP.get(i).getGiorno());
-                Log.d("giovanni", "Colore: " + s + "     " );
 
-                if (s.equals(dayString.get(position))) {
-                    Log.d("giovanni2", "Colore: " + s + "     " + dayString.get(position));
-                    
-                    switch (arrayP.get(i).getMattina()) {
-                        case "assente":
-                            mattina.setBackgroundColor(mContext.getResources().getColor(R.color.rosso));
-                            break;
-                        case "presente":
-                            mattina.setBackgroundColor(mContext.getResources().getColor(R.color.verde));
-                            break;
-                        case "trasferta":
-                            mattina.setBackgroundColor(mContext.getResources().getColor(R.color.azzurro));
-                            break;
+                    } else {
+
+
+                        switch (arrayP.get(i).getMattina()) {
+                            case "assente":
+                                mattina.setBackgroundColor(mContext.getResources().getColor(R.color.rosso));
+                                mattina.setVisibility(View.VISIBLE);
+                                break;
+                            case "presente":
+                                mattina.setBackgroundColor(mContext.getResources().getColor(R.color.verde));
+                                mattina.setVisibility(View.VISIBLE);
+                                break;
+                            case "trasferta":
+                                mattina.setBackgroundColor(mContext.getResources().getColor(R.color.azzurro));
+                                mattina.setVisibility(View.VISIBLE);
+                                break;
+
+
+                        }
+
+                        switch (arrayP.get(i).getPomeriggio()) {
+                            case "assente":
+                                pomeriggio.setBackgroundColor(mContext.getResources().getColor(R.color.rosso));
+                                pomeriggio.setVisibility(View.VISIBLE);
+                                break;
+                            case "presente":
+                                pomeriggio.setBackgroundColor(mContext.getResources().getColor(R.color.verde));
+                                pomeriggio.setVisibility(View.VISIBLE);
+
+                                break;
+                            case "trasferta":
+                                pomeriggio.setBackgroundColor(mContext.getResources().getColor(R.color.azzurro));
+                                pomeriggio.setVisibility(View.VISIBLE);
+
+                                break;
+
+
+                        }
+                        i+= arrayP.size();
+
+
+
                     }
 
 
-                } else {
-                    refreshDays();
-                    refreshTextView();
-                    notifyDataSetChanged();
-
                 }
-            }
 
-    }
-
-
-
-
-/*
-
-    public void Colore(int position) {
-
-        //PROVA
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String s = dateFormat.format(arrayP.get(0).getGiorno());
-        String s1 = dateFormat.format(arrayP.get(1).getGiorno());
-
-        Log.d("ciao4", "fiore" + dayString.get(position)+" "+ s);
-
-        if(s.equals(dayString.get(position))){
-
-            switch (arrayP.get(0).getMattina()) {
-                case "assente":
-                    mattina.setBackgroundColor(mContext.getResources().getColor(R.color.rosso));
-                    break;
-                case "presente":
-                    mattina.setBackgroundColor(mContext.getResources().getColor(R.color.verde));
-                    break;
-                case "trasferta":
-                    mattina.setBackgroundColor(mContext.getResources().getColor(R.color.azzurro));
-                    break;
-            }
-
-        }else {
-            if (s1.equals(dayString.get(position))) {
-
-                switch (arrayP.get(1).getMattina()) {
-                    case "assente":
-                        mattina.setBackgroundColor(mContext.getResources().getColor(R.color.rosso));
-                        break;
-                    case "presente":
-                        mattina.setBackgroundColor(mContext.getResources().getColor(R.color.verde));
-                        break;
-                    case "trasferta":
-                        mattina.setBackgroundColor(mContext.getResources().getColor(R.color.azzurro));
-                        break;
-                }}else{
-
-                    refreshDays();
-                    refreshTextView();
-                    notifyDataSetChanged();
-                }
-            }
         }
-
-*/
-
-
-
 
     public View setSelected(View view) {
         if (previousView != null) {
@@ -247,6 +225,7 @@ public class CalendarAdapter extends BaseAdapter {
         previousView = view;
         return view;
     }
+
 
     public void refreshDays() {
         items.clear();
@@ -274,8 +253,8 @@ public class CalendarAdapter extends BaseAdapter {
             dayString.add(itemvalue);
 
 
-        }
 
+        }
     }
 
     private int getMaxP() {
@@ -294,8 +273,10 @@ public class CalendarAdapter extends BaseAdapter {
     }
 
     public void refreshTextView(){
-        mattina.setBackgroundColor(Color.WHITE);
-        pomeriggio.setBackgroundColor(Color.WHITE);
+        mattina.setVisibility(View.INVISIBLE);
+        pomeriggio.setVisibility(View.INVISIBLE);
     }
+
+
 
 }

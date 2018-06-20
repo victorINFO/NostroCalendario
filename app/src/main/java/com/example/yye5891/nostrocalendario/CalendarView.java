@@ -4,20 +4,32 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.NumberPicker;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 public class CalendarView extends Activity {
@@ -27,15 +39,17 @@ public class CalendarView extends Activity {
     public CalendarAdapter adapter;
     public Handler handler;
     public ArrayList<String> items;
-
+    private DatePickerDialog.OnDateSetListener mDateSetListener;
     public ArrayList<Presenze> arrayP = new ArrayList<>();
-    Date giorno1, giorno2, giorno3,giorno4;
+    String giorno1, giorno2, giorno3, giorno4, giorno5;
+    Date date1;
+    int anno_cercato = 0;
 
     @SuppressLint("ClickableViewAccessibility")
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calendar2);
-        Locale.setDefault( Locale.ITALY );
+        Locale.setDefault(Locale.US);
         month = (GregorianCalendar) GregorianCalendar.getInstance();
         itemmonth = (GregorianCalendar) month.clone();
 
@@ -52,52 +66,33 @@ public class CalendarView extends Activity {
         gridview.setAdapter(adapter);
 
 
-        String dtStart = "2018-03-18";
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            giorno1 = format.parse(dtStart);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        String dtStart2 = "2018-04-16";
-        try {
-            giorno2 = format.parse(dtStart2);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        String dtStart3 = "2018-06-14";
-        try {
-            giorno3 = format.parse(dtStart3);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        String dtStart4 = "2018-05-11";
-        try {
-            giorno4 = format.parse(dtStart4);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
+        giorno1 = "2018-06-18";
+        giorno2 = "2018-04-16";
+        giorno3 = "2018-05-14";
+        giorno4 = "2018-04-11";
+        giorno5 = "2018-05-10";
 
 
         arrayP.add(new Presenze(giorno1, "presente", "trasferta"));
         arrayP.add(new Presenze(giorno2, "assente", "presente"));
-        arrayP.add( new Presenze(giorno3, "trasferta", "assente"));
-        arrayP.add( new Presenze(giorno4, "assente", "presente"));
-
+        arrayP.add(new Presenze(giorno3, "trasferta", "assente"));
+        arrayP.add(new Presenze(giorno4, "assente", "assente"));
+        arrayP.add(new Presenze(giorno5, "presente", "presente"));
+        arrayP.add(new Presenze("2018-03-12", "trasferta", "trasferta"));
+        arrayP.add(new Presenze("2018-03-03", "presente", "assente"));
+        arrayP.add(new Presenze("2018-03-31", "trasferta", "presente"));
 
         handler = new Handler();
         handler.post(calendarUpdater);
 
-        TextView title = (TextView) findViewById(R.id.title);
+        final TextView title = (TextView) findViewById(R.id.title);
         title.setText(android.text.format.DateFormat.format("MMMM yyyy", month));
 
 
-        gridview.setOnTouchListener(new OnSwipeTouchListener(CalendarView.this){
+        gridview.setOnTouchListener(new OnSwipeTouchListener(CalendarView.this) {
 
 
-            public void onSwipeRight(){
+            public void onSwipeRight() {
                 setPreviousMonth();
                 refreshCalendar();
                 pulse_left.clearAnimation();
@@ -106,7 +101,7 @@ public class CalendarView extends Activity {
                 pulse_right.setVisibility(View.GONE);
             }
 
-            public void onSwipeLeft(){
+            public void onSwipeLeft() {
                 setNextMonth();
                 refreshCalendar();
                 pulse_left.clearAnimation();
@@ -115,7 +110,6 @@ public class CalendarView extends Activity {
                 pulse_right.setVisibility(View.GONE);
             }
         });
-
 
 
         gridview.setOnItemClickListener(new OnItemClickListener() {
@@ -138,20 +132,74 @@ public class CalendarView extends Activity {
                 }
                 ((CalendarAdapter) parent.getAdapter()).setSelected(v);
 
-                //selectedGridDate
+                DialogFragment df = new DialogFragment();
             }
         });
+
+
+        title.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar cal = Calendar.getInstance();
+                int p_year = cal.get(Calendar.YEAR);
+                int p_month = cal.get(Calendar.MONTH);
+                int p_day = cal.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog dialog = new DatePickerDialog(CalendarView.this,
+                        android.R.style.Theme_Holo_Light_Dialog,
+                        mDateSetListener, p_year, p_month, p_day);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+
+            }
+        });
+
+        mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int p_year, int p_month, int p_day) {
+                p_month = p_month +1;
+                String date = p_year + "-" + p_month + "-" + p_day;
+
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                try {
+                    date1 = format.parse(date);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+
+                title.setText(android.text.format.DateFormat.format("MMMM yyyy", date1));
+
+                anno_cercato = p_year;
+                setMonth();
+                refreshCalendar();
+            }
+
+        };
     }
 
+
     protected void setNextMonth() {
-        if (month.get(GregorianCalendar.MONTH) == month
-                .getActualMaximum(GregorianCalendar.MONTH)) {
-            month.set((month.get(GregorianCalendar.YEAR) + 1),
-                    month.getActualMinimum(GregorianCalendar.MONTH), 1);
+        if (month.get(GregorianCalendar.MONTH) == month.getActualMaximum(GregorianCalendar.MONTH)) {
+            month.set((month.get(GregorianCalendar.YEAR) + 1), month.getActualMinimum(GregorianCalendar.MONTH), 1);
 
         } else {
             month.set(GregorianCalendar.MONTH,
                     month.get(GregorianCalendar.MONTH) + 1);
+        }
+
+        adapter.refreshTextView();
+
+    }
+
+    protected void setMonth() {
+        if (month.get(GregorianCalendar.MONTH) == month.getActualMaximum(GregorianCalendar.MONTH)) {
+            month.set((month.get(GregorianCalendar.YEAR) + 1), month.getActualMinimum(GregorianCalendar.MONTH), 1);
+
+        } else {
+
+            month.set(GregorianCalendar.MONTH, date1.getMonth());
+            month.set(GregorianCalendar.YEAR, anno_cercato);
+
         }
 
         adapter.refreshTextView();
@@ -189,7 +237,19 @@ public class CalendarView extends Activity {
             // Print dates of the current week
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd",Locale.ITALY);
             String itemvalue;
+            for (int i = 0; i < 7; i++) {
+                itemvalue = df.format(itemmonth.getTime());
+                itemmonth.add(GregorianCalendar.DATE, 1);
+                items.add("2012-09-12");
+                items.add("2012-10-07");
+                items.add("2012-10-15");
+                items.add("2012-10-20");
+                items.add("2012-11-30");
+                items.add("2012-11-28");
+            }
 
+            adapter.setItems(items);
+            adapter.notifyDataSetChanged();
         }
     };
 }

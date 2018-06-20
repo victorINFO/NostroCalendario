@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,6 +15,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:background="@android:color/white"
         android:orientation="vertical"
         android:weightSum="100"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -22,6 +24,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
+            android:id="@+id/info"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="27"
@@ -34,37 +37,35 @@
                 android:layout_height="match_parent"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:layout_margin="10dp"
 
+                android:layout_margin="5dip"
                 android:layout_weight="70"
                 android:src="@drawable/profile" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="30"
-                android:orientation="vertical"
-                android:weightSum="100">
+                android:layout_weight="30">
 
                 <TextView
                     android:id="@+id/mat"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="35dp"
-                    android:layout_weight="50"
-                    android:gravity="center_vertical"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="8dp"
+                    android:gravity="right"
                     android:text="Matricola:  4521" />
 
                 <TextView
                     android:id="@+id/name"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:layout_weight="50"
-                    android:gravity="bottom"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="4dp"
+                    android:gravity="center|start"
                     android:text="Giulia Vanzan"
                     android:textSize="30sp" />
-            </LinearLayout>
+            </RelativeLayout>
 
 
         </LinearLayout>
@@ -72,7 +73,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="32"
+            android:layout_weight="31"
             android:orientation="horizontal"
             android:weightSum="100">
 
@@ -96,73 +97,66 @@
 
             <TextView
                 android:id="@+id/textView2"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:padding="3dp"
-                android:text="Dom" />
+                android:text="D" />
 
             <TextView
                 android:id="@+id/textView10"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:padding="3dp"
-                android:text="Lun" />
+                android:text="L" />
 
             <TextView
                 android:id="@+id/textView11"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:padding="3dp"
-                android:text="Mar" />
+                android:text="M" />
 
             <TextView
                 android:id="@+id/textView12"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:padding="3dp"
-                android:text="Mer" />
+                android:text="M" />
 
             <TextView
                 android:id="@+id/textView13"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:padding="3dp"
-                android:text="Gio" />
+                android:text="G" />
 
             <TextView
                 android:id="@+id/textView14"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:padding="3dp"
-                android:text="Ven" />
+                android:text="V" />
 
             <TextView
                 android:id="@+id/textView15"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:padding="3dp"
-                android:text="Sab" />
+                android:text="S" />
         </LinearLayout>
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical|center_horizontal"
-            android:layout_weight="10">
+            android:layout_weight="11">
 
             <ImageView
                 android:id="@+id/pulse_left"

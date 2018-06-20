@@ -4,11 +4,11 @@ import java.util.Date;
 
 public class Presenze {
 
-    Date giorno;
+    String giorno;
     String mattina="";
     String pomeriggio="";
 
-    public Presenze(Date giorno, String mattina, String pomeriggio) {
+    public Presenze(String giorno, String mattina, String pomeriggio) {
         this.giorno = giorno;
         this.mattina = mattina;
         this.pomeriggio = pomeriggio;
@@ -18,11 +18,11 @@ public class Presenze {
 
     }
 
-    public Date getGiorno() {
+    public String getGiorno() {
         return giorno;
     }
 
-    public void setGiorno(Date giorno) {
+    public void setGiorno(String giorno) {
         this.giorno = giorno;
     }
 
