@@ -10,7 +10,9 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.text.Layout;
 import android.util.Log;
@@ -21,6 +23,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import static android.graphics.Color.rgb;
 
 public class CalendarAdapter extends BaseAdapter {
     private Context mContext;
@@ -95,6 +99,7 @@ public class CalendarAdapter extends BaseAdapter {
         return 0;
     }
 
+    @SuppressLint("ResourceAsColor")
     public View getView(int position, View convertView, ViewGroup parent) {
 
         View v = convertView;
@@ -112,7 +117,7 @@ public class CalendarAdapter extends BaseAdapter {
         pomeriggio = (TextView) v.findViewById(R.id.pomeriggio);
         lay = v.findViewById(R.id.lay_item);
 
-       
+
         Colore(position);
 
 
@@ -132,10 +137,11 @@ public class CalendarAdapter extends BaseAdapter {
 
         if (dayString.get(position).equals(curentDateString)) {
             setSelected(v);
-            lay.setBackgroundResource(R.color.item);
+            dayView.setTextColor(Color.parseColor("#2196F3"));
             previousView = v;
         } else {
             v.setBackgroundResource(R.drawable.item_background);
+
             lay.setBackgroundResource(R.drawable.item_background);
 
         }

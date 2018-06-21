@@ -44,6 +44,7 @@ public class CalendarView extends Activity {
     String giorno1, giorno2, giorno3, giorno4, giorno5;
     Date date1;
     int anno_cercato = 0;
+    ImageView left, right;
 
     @SuppressLint("ClickableViewAccessibility")
     public void onCreate(Bundle savedInstanceState) {
@@ -53,16 +54,14 @@ public class CalendarView extends Activity {
         month = (GregorianCalendar) GregorianCalendar.getInstance();
         itemmonth = (GregorianCalendar) month.clone();
 
-        final ImageView pulse_left = findViewById(R.id.pulse_left);
-        final ImageView pulse_right = findViewById(R.id.pulse_right);
-
-        pulse_left.startAnimation(AnimationUtils.loadAnimation(this, R.anim.pulse_left_out));
-        pulse_right.startAnimation(AnimationUtils.loadAnimation(this, R.anim.pulse_right_out));
-
         items = new ArrayList<String>();
         adapter = new CalendarAdapter(this, month, arrayP);
 
         final GridView gridview = (GridView) findViewById(R.id.gridview);
+
+        left = findViewById(R.id.left);
+        right = findViewById(R.id.right);
+
         gridview.setAdapter(adapter);
 
 
@@ -89,29 +88,39 @@ public class CalendarView extends Activity {
         title.setText(android.text.format.DateFormat.format("MMMM yyyy", month));
 
 
+
+        left.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setNextMonth();
+                refreshCalendar();
+            }
+        });
+
+
+        right.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setPreviousMonth();
+                refreshCalendar();
+            }
+        });
+/*
         gridview.setOnTouchListener(new OnSwipeTouchListener(CalendarView.this) {
 
 
             public void onSwipeRight() {
                 setPreviousMonth();
                 refreshCalendar();
-                pulse_left.clearAnimation();
-                pulse_right.clearAnimation();
-                pulse_left.setVisibility(View.GONE);
-                pulse_right.setVisibility(View.GONE);
             }
 
             public void onSwipeLeft() {
                 setNextMonth();
                 refreshCalendar();
-                pulse_left.clearAnimation();
-                pulse_right.clearAnimation();
-                pulse_left.setVisibility(View.GONE);
-                pulse_right.setVisibility(View.GONE);
             }
         });
 
-
+*/
         gridview.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {

@@ -5,6 +5,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="rosso">#f14b1d</color>
     <color name="verde">#96ff40</color>
-    <color name="azzurro">#40ffe9</color>
-    <color name="item">#0f000000</color>
+    <color name="azzurro">#0040ffe9</color>
+    <color name="item">#2196F3</color>
+    <color name="mat">#03A9F4</color>
 </resources>

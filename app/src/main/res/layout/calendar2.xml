@@ -29,6 +29,7 @@
             android:layout_height="match_parent"
             android:layout_weight="27"
             android:orientation="horizontal"
+
             android:weightSum="100">
 
             <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -38,7 +39,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
 
-                android:layout_margin="5dip"
+                android:layout_margin="4dip"
                 android:layout_weight="70"
                 android:src="@drawable/profile" />
 
@@ -54,15 +55,16 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="8dp"
                     android:layout_marginTop="8dp"
-                    android:gravity="right"
+                    android:gravity="top|right|center"
                     android:text="Matricola:  4521" />
 
                 <TextView
                     android:id="@+id/name"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="4dp"
-                    android:gravity="center|start"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:gravity="bottom|left|center"
                     android:text="Giulia Vanzan"
                     android:textSize="30sp" />
             </RelativeLayout>
@@ -75,7 +77,19 @@
             android:layout_height="match_parent"
             android:layout_weight="31"
             android:orientation="horizontal"
+            android:background="@drawable/border"
+
             android:weightSum="100">
+
+            <ImageButton
+                android:id="@+id/left"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_gravity="center_vertical"
+                android:layout_weight="35"
+                android:background="@android:color/transparent"
+                android:src="@drawable/left" />
 
             <TextView
                 android:id="@+id/title"
@@ -86,6 +100,16 @@
                 android:text="June 2018"
                 android:textSize="20sp" />
 
+            <ImageButton
+                android:id="@+id/right"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="35"
+                android:background="@android:color/transparent"
+                android:padding="8dp"
+                android:src="@drawable/right" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -93,7 +117,9 @@
             android:layout_height="match_parent"
             android:layout_weight="31"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:background="@drawable/border2"
+            >
 
             <TextView
                 android:id="@+id/textView2"
@@ -157,22 +183,6 @@
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical|center_horizontal"
             android:layout_weight="11">
-
-            <ImageView
-                android:id="@+id/pulse_left"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left|center_vertical|center"
-                android:elevation="3dp"
-                android:src="@drawable/indietro" />
-
-            <ImageView
-                android:id="@+id/pulse_right"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right|center_vertical"
-                android:elevation="3dp"
-                android:src="@drawable/avanti" />
 
             <GridView
                 android:id="@+id/gridview"
