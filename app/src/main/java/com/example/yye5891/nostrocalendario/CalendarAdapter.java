@@ -3,6 +3,8 @@ package com.example.yye5891.nostrocalendario;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Month;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -119,6 +121,7 @@ public class CalendarAdapter extends BaseAdapter {
 
 
         Colore(position);
+        //ColoreProva(position);
 
 
         String[] separatedTime = dayString.get(position).split("-");
@@ -133,6 +136,7 @@ public class CalendarAdapter extends BaseAdapter {
             dayView.setFocusable(false);
         } else {
             dayView.setTextColor(Color.BLACK);
+
         }
 
         if (dayString.get(position).equals(curentDateString)) {
@@ -165,64 +169,91 @@ public class CalendarAdapter extends BaseAdapter {
         }
         return v;
     }
+/*
+
+    public void ColoreProva(int position){
+
+        String[] separatedTime = dayString.get(position).split("-");
+        String gridvalue = separatedTime[2].replaceFirst("^0*", "");
+
+        if (dayString.get(position).contains("06")){
+
+            mattina.setBackgroundColor(mContext.getResources().getColor(R.color.verde));
+            mattina.setVisibility(View.VISIBLE);
+            pomeriggio.setBackgroundColor(mContext.getResources().getColor(R.color.verde));
+            pomeriggio.setVisibility(View.VISIBLE);
+        }else if (dayString.get(position).contains("15")) {
+            mattina.setBackgroundColor(mContext.getResources().getColor(R.color.rosso));
+            mattina.setVisibility(View.VISIBLE);
+            pomeriggio.setBackgroundColor(mContext.getResources().getColor(R.color.rosso));
+            pomeriggio.setVisibility(View.VISIBLE);
+        }else{
+
+            refreshDays();
+            refreshTextView();
+            notifyDataSetChanged();
+        }
+
+    }
+
+*/
 
 
     public void Colore(int position) {
            for (int i = 0; i < arrayP.size(); i++) {
+
                 if (!(dayString.get(position).equals(arrayP.get(i).getGiorno()))) {
                         refreshDays();
                         refreshTextView();
                         notifyDataSetChanged();
+                }
+                else {
 
 
-                    } else {
-
-
-                        switch (arrayP.get(i).getMattina()) {
-                            case "assente":
-                                mattina.setBackgroundColor(mContext.getResources().getColor(R.color.rosso));
-                                mattina.setVisibility(View.VISIBLE);
-                                break;
-                            case "presente":
-                                mattina.setBackgroundColor(mContext.getResources().getColor(R.color.verde));
-                                mattina.setVisibility(View.VISIBLE);
-                                break;
-                            case "trasferta":
-                                mattina.setBackgroundColor(mContext.getResources().getColor(R.color.azzurro));
-                                mattina.setVisibility(View.VISIBLE);
-                                break;
-
-
-                        }
-
-                        switch (arrayP.get(i).getPomeriggio()) {
-                            case "assente":
-                                pomeriggio.setBackgroundColor(mContext.getResources().getColor(R.color.rosso));
-                                pomeriggio.setVisibility(View.VISIBLE);
-                                break;
-                            case "presente":
-                                pomeriggio.setBackgroundColor(mContext.getResources().getColor(R.color.verde));
-                                pomeriggio.setVisibility(View.VISIBLE);
-
-                                break;
-                            case "trasferta":
-                                pomeriggio.setBackgroundColor(mContext.getResources().getColor(R.color.azzurro));
-                                pomeriggio.setVisibility(View.VISIBLE);
-
-                                break;
-
-
-                        }
-                        i+= arrayP.size();
-
+                    switch (arrayP.get(i).getMattina()) {
+                        case "assente":
+                            mattina.setBackgroundColor(mContext.getResources().getColor(R.color.rosso));
+                            mattina.setVisibility(View.VISIBLE);
+                            break;
+                        case "presente":
+                            mattina.setBackgroundColor(mContext.getResources().getColor(R.color.verde));
+                            mattina.setVisibility(View.VISIBLE);
+                            break;
+                        case "trasferta":
+                            mattina.setBackgroundColor(mContext.getResources().getColor(R.color.azzurro));
+                            mattina.setVisibility(View.VISIBLE);
+                            break;
 
 
                     }
 
+                    switch (arrayP.get(i).getPomeriggio()) {
+                        case "assente":
+                            pomeriggio.setBackgroundColor(mContext.getResources().getColor(R.color.rosso));
+                            pomeriggio.setVisibility(View.VISIBLE);
+                            break;
+                        case "presente":
+                            pomeriggio.setBackgroundColor(mContext.getResources().getColor(R.color.verde));
+                            pomeriggio.setVisibility(View.VISIBLE);
 
-                }
+                            break;
+                        case "trasferta":
+                            pomeriggio.setBackgroundColor(mContext.getResources().getColor(R.color.azzurro));
+                            pomeriggio.setVisibility(View.VISIBLE);
 
-        }
+                            break;
+
+
+                    }
+
+                    i+= arrayP.size();
+                    }
+
+
+           }
+
+
+    }
 
     public View setSelected(View view) {
         if (previousView != null) {

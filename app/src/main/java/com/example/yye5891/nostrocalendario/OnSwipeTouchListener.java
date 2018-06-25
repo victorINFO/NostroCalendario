@@ -1,6 +1,8 @@
 package com.example.yye5891.nostrocalendario;
 
 import android.content.Context;
+import android.support.animation.DynamicAnimation;
+import android.support.animation.FlingAnimation;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
@@ -67,7 +69,6 @@ public class OnSwipeTouchListener implements OnTouchListener{
 
 
     public void onSwipeRight() {
-
     }
 
 

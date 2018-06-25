@@ -43,31 +43,33 @@
                 android:layout_weight="70"
                 android:src="@drawable/profile" />
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="30">
+                android:layout_weight="30"
+                android:orientation="vertical"
+                android:weightSum="100">
 
                 <TextView
                     android:id="@+id/mat"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="8dp"
-                    android:layout_marginTop="8dp"
-                    android:gravity="top|right|center"
+                    android:layout_weight="30"
+                    android:gravity="bottom|right"
                     android:text="Matricola:  4521" />
 
                 <TextView
                     android:id="@+id/name"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="8dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
-                    android:gravity="bottom|left|center"
+                    android:layout_weight="70"
+                    android:gravity="left|center"
                     android:text="Giulia Vanzan"
                     android:textSize="30sp" />
-            </RelativeLayout>
+            </LinearLayout>
 
 
         </LinearLayout>
@@ -75,9 +77,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="31"
+            android:layout_weight="30"
+
             android:orientation="horizontal"
-            android:background="@drawable/border"
 
             android:weightSum="100">
 
@@ -87,7 +89,7 @@
                 android:layout_height="match_parent"
 
                 android:layout_gravity="center_vertical"
-                android:layout_weight="35"
+                android:layout_weight="38"
                 android:background="@android:color/transparent"
                 android:src="@drawable/left" />
 
@@ -95,7 +97,7 @@
                 android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="30"
+                android:layout_weight="24"
                 android:gravity="center_vertical|center_horizontal"
                 android:text="June 2018"
                 android:textSize="20sp" />
@@ -105,7 +107,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="35"
+                android:layout_weight="38"
                 android:background="@android:color/transparent"
                 android:padding="8dp"
                 android:src="@drawable/right" />
@@ -177,19 +179,26 @@
                 android:gravity="center"
                 android:text="S" />
         </LinearLayout>
-
         <FrameLayout
+
+
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical|center_horizontal"
             android:layout_weight="11">
 
             <GridView
+                android:animateLayoutChanges="true"
+                android:animationCache="false"
+                android:scrollingCache="false"
+
                 android:id="@+id/gridview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical|center_horizontal|center"
+
                 android:numColumns="7" />
+
 
         </FrameLayout>
 

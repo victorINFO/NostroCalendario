@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -18,8 +19,12 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.animation.DynamicAnimation;
+import android.support.animation.FlingAnimation;
+import android.support.v4.view.ViewCompat;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -92,7 +97,8 @@ public class CalendarView extends Activity {
         left.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setNextMonth();
+
+                setPreviousMonth();
                 refreshCalendar();
             }
         });
@@ -101,26 +107,36 @@ public class CalendarView extends Activity {
         right.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setPreviousMonth();
-                refreshCalendar();
-            }
-        });
-/*
-        gridview.setOnTouchListener(new OnSwipeTouchListener(CalendarView.this) {
 
-
-            public void onSwipeRight() {
-                setPreviousMonth();
-                refreshCalendar();
-            }
-
-            public void onSwipeLeft() {
                 setNextMonth();
                 refreshCalendar();
             }
         });
 
-*/
+        gridview.setOnTouchListener(new OnSwipeTouchListener(CalendarView.this) {
+
+
+            public void onSwipeRight() {
+                ValueAnimator animation = ValueAnimator.ofFloat(0f, 100f);
+                animation.setDuration(1000);
+                animation.start();
+                setPreviousMonth();
+                refreshCalendar();
+
+            }
+
+            public void onSwipeLeft() {
+                ValueAnimator animation = ValueAnimator.ofFloat(0f, 100f);
+                animation.setDuration(1000);
+                animation.start();
+                setNextMonth();
+                refreshCalendar();
+            }
+        });
+
+
+
+
         gridview.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
@@ -229,6 +245,7 @@ public class CalendarView extends Activity {
 
     public void refreshCalendar() {
         TextView title = (TextView) findViewById(R.id.title);
+
 
         adapter.refreshDays();
         adapter.notifyDataSetChanged();
